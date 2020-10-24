@@ -69,7 +69,7 @@ class HangmanGame {
       .addField("Letters Guessed", "\u200b")
       .addField(
         "How To Play",
-        "React to this message using the emojis that look like letters (🅰️, 🇹, )"
+        "Reply to this message with the letter you want to guess"
       )
       .setTimestamp();
 
@@ -79,26 +79,23 @@ class HangmanGame {
     });
   }
 
-  makeGuess(reaction) {
-    if (Object.keys(letterEmojisMap).includes(reaction)) {
-      const letter = letterEmojisMap[reaction];
-      if (!this.guesssed.includes(letter)) {
-        this.guesssed.push(letter);
+  makeGuess(letter) {
+    if (!this.guesssed.includes(letter)) {
+      this.guesssed.push(letter);
 
-        if (this.word.indexOf(letter) == -1) {
-          this.wrongs++;
+      if (this.word.indexOf(letter) == -1) {
+        this.wrongs++;
 
-          if (this.wrongs == 6) {
-            this.gameOver(false);
-          }
-        } else if (
-          !this.word
-            .split("")
-            .map((l) => (this.guesssed.includes(l) ? l : "_"))
-            .includes("_")
-        ) {
-          this.gameOver(true);
+        if (this.wrongs == 6) {
+          this.gameOver(false);
         }
+      } else if (
+        !this.word
+          .split("")
+          .map((l) => (this.guesssed.includes(l) ? l : "_"))
+          .includes("_")
+      ) {
+        this.gameOver(true);
       }
     }
 
@@ -113,7 +110,7 @@ class HangmanGame {
         )
         .addField(
           "How To Play",
-          "React to this message using the emojis that look like letters (🅰️, 🇹, )"
+          "Reply to this message with the letter you want to guess"
         )
         .setTimestamp();
       this.gameEmbed.edit(editEmbed);
@@ -158,16 +155,30 @@ class HangmanGame {
   }
 
   waitForReaction() {
-    this.gameEmbed
-      .awaitReactions(() => true, { max: 1, time: 300000, errors: ["time"] })
-      .then((collected) => {
-        const reaction = collected.first();
-        this.makeGuess(reaction.emoji.name);
-        reaction.remove();
+    // Only use reactions that are just one letter
+    const filter = (m) => m.content.length == 1;
+
+    this.gameEmbed.channel
+      .awaitMessages(filter, {
+        // Give the user(s) 30 seconds to guess
+        time: 30000,
+        // Only wait for 1 message
+        max: 1,
+        // Error when times out
+        errors: ["time"],
       })
-      .catch((collected) => {
-        this.gameOver(false);
-      });
+      .then((collected) => {
+        // Make the letter uppercase
+        const letter = collected.first().content.toUpperCase();
+        // Make a guess!
+        this.makeGuess(letter);
+        // Delete the guess message
+        collected
+          .first()
+          .delete()
+          .catch((a) => null);
+      })
+      .catch(() => this.gameOver(false));
   }
 }
 
