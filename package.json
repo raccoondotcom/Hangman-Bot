@@ -19,5 +19,9 @@
   "dependencies": {
     "discord.js": "^12.4.0",
     "eslint": "^7.11.0"
+  },
+  "engines": {
+    "node": "12.x",
+    "npm": "*"
   }
 }
