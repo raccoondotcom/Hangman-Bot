@@ -20,4 +20,4 @@ client.on('message', msg => {
 });
 
 // eslint-disable-next-line no-undef
-client.login(process.env.BOT_TOKEN);
+client.login(token);
