@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const HangmanGame = require('./hangman-game');
 const client = new Discord.Client();
-
+const { prefix } = require('./config.json');
 const hangman = new HangmanGame(client);
 
 
