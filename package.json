@@ -1,0 +1,23 @@
+{
+  "name": "hangman-bot",
+  "version": "1.0.0",
+  "description": "Hangman Bot for Discord",
+  "main": "index.js",
+  "scripts": {
+    "test": "testrun"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raccoondotcom/Hangman-Bot.git"
+  },
+  "author": "raccoondotcom",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/raccoondotcom/Hangman-Bot/issues"
+  },
+  "homepage": "https://github.com/raccoondotcom/Hangman-Bot#readme",
+  "dependencies": {
+    "discord.js": "^12.4.0",
+    "eslint": "^7.11.0"
+  }
+}
