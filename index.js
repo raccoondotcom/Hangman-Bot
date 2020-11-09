@@ -13,6 +13,9 @@ client.on('message', msg => {
 	if (msg.content.toLowerCase() === `${prefix}hangman`) {
 		hangman.newGame(msg);
 	}
+	else if (message.content.toLowerCase() === "mhm") {
+		message.channel.send("mhm")
+		}
 });
 
 // eslint-disable-next-line no-undef
